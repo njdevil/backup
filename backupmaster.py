@@ -1,4 +1,4 @@
-# Version 3.0.1
+# Version 3.0.2
 # Linux Backup System
 # ©2013 Modular Programming Systems Inc
 # released as GPL 3
@@ -14,6 +14,9 @@ DB_NAME='...'
 DB_HOST='...'
 DB_USER='...'
 DB_PASS='...'
+#keep backups for this long, delete on next day
+DAILY_STORE_TERM= 7
+WEEKLY_STORE_TERM= 28
 LOCAL_INCLUDE=['/var/www',
             '/etc/apache2/vhosts.d']  #example locations
 LOCAL_EXCLUDE=['/admin/media',
@@ -74,13 +77,13 @@ def mysqlbackup(dates):
 
 def remove_old(location,dates,term=None):
     if location=="mysql":
-        os.system('rm -rf /backup/mysql/'+dates["days29"])
+        os.system('rm -rf /backup/mysql/'+dates["weeklyterm"])
         os.system('mkdir /backup/mysql/'+dates["yesterday"])
     else:
         if term=="daily":
-            os.system('rm /backup/'+location+term+'/'+dates["days8"]+'.zip')
+            os.system('rm /backup/'+location+term+'/'+dates["dailyterm"]+'.zip')
         else:
-            os.system('rm /backup/'+location+term+'/'+dates["days29"]+'.zip')
+            os.system('rm /backup/'+location+term+'/'+dates["weeklyterm"]+'.zip')
 
 
 if __name__=="__main__":
@@ -93,8 +96,8 @@ if __name__=="__main__":
     dates={}
     dates["yesterday"]=(datetime.datetime.now()-datetime.timedelta(days=1)).strftime("%Y%m%d")
     dates["yesterdayepoch"]=time.mktime(time.strptime(dates["yesterday"],"%Y%m%d"))
-    dates["days8"]=(datetime.datetime.now()-datetime.timedelta(days=8)).strftime("%Y%m%d")
-    dates["days29"]=(datetime.datetime.now()-datetime.timedelta(days=29)).strftime("%Y%m%d")
+    dates["dailyterm"]=(datetime.datetime.now()-datetime.timedelta(days=(DAILY_STORE_TERM+1))).strftime("%Y%m%d")
+    dates["weeklyterm"]=(datetime.datetime.now()-datetime.timedelta(days=(WEEKLY_STORE_TERM+1))).strftime("%Y%m%d")
 
     local={"location": "local", "dir_include": LOCAL_INCLUDE, "dir_exclude": LOCAL_EXCLUDE}
     client={"location": "client", "dir_include": CLIENT_INCLUDE, "dir_exclude": CLIENT_EXCLUDE}
