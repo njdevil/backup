@@ -1,3 +1,8 @@
+# Version 3.0.1
+# Linux Backup System
+# ©2013 Modular Programming Systems Inc
+# released as GPL 3
+
 import MySQLdb
 import MySQLdb.cursors
 import os
@@ -26,7 +31,7 @@ def backup(name,dates,term):
             if term=="daily":
                 file_date_check(location,dir+"/"+file,dates)
             else:
-                os.system('zip -g /backup/'+location+term+'/'+dates["yesterday"]+'.zip '+dir+'/'+file)
+                os.system('zip -g /backup/'+location+term+'/'+dates["yesterday"]+'.zip "'+dir+'/'+file+'"')
     file_exists(location,term,dates["yesterday"])
 
 def directory_exclude(dir_include,dir_exclude):
@@ -48,7 +53,7 @@ def directory_exclude(dir_include,dir_exclude):
 
 def file_date_check(location,file,dates):
     if os.stat(file).st_mtime > dates["yesterdayepoch"]:
-        os.system('zip -g /backup/'+location+'daily/'+dates["yesterday"]+'.zip '+file)
+        os.system('zip -g /backup/'+location+'daily/'+dates["yesterday"]+'.zip "'+file+'"')
 
 def file_exists(location,term,date):
     if not os.path.isfile('/backup/'+location+term+'/'+date+'/.zip'):
