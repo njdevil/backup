@@ -1,7 +1,11 @@
-# Version 3.0.2
-# Linux Backup System
-# ©2013 Modular Programming Systems Inc
-# released as GPL 3
+#!/usr/bin/python
+
+################
+# Linux Backup System v3.1
+# Copyright 2013, Modular Programming Systems Inc.
+# Released as GPL 3
+#
+################
 
 import MySQLdb
 import MySQLdb.cursors
@@ -17,11 +21,12 @@ DB_PASS='...'
 #keep backups for this long, delete on next day
 DAILY_STORE_TERM= 7
 WEEKLY_STORE_TERM= 28
-LOCAL_INCLUDE=['/var/www',
-            '/etc/apache2/vhosts.d']  #example locations
-LOCAL_EXCLUDE=['/admin/media',
-            '/media']
-CLIENT_INCLUDE=['/var/www/client']
+LOCAL_INCLUDE=['/local/path/to/include',
+            'another/local_path/to/include']
+LOCAL_EXCLUDE=['/path/to/exclude',
+            '/another/path/to/exclude']
+CLIENT_INCLUDE=['/client/path/to/include',
+            '/another/client/path/to/include']
 CLIENT_EXCLUDE=[]
 
 def backup(name,dates,term):
